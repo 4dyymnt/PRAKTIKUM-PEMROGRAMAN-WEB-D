@@ -1,34 +1,34 @@
 <?php
-require_once "Produk.php";
-$produk = new Produk();
-$data = $produk->getAll();
+require_once "../config/Database.php";
+require_once "../class/Barang.php";
+$db = new Database();
+$barang = new Barang($db->conn);
+$data = $barang->tampil();
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Daftar Produk Warung</title>
-    <link rel="stylesheet" href="style.css">
+<title>Warung Sembako</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/script.js"></script>
 </head>
 <body>
-<h2>Daftar Produk Warung</h2>
-
+<h2>Data Barang Warung Sembako</h2>
+<a href="tambah.php">+ Tambah Barang</a>
 <table>
+<tr><th>No</th><th>Nama Barang</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr>
+<?php $no=1; while($row=$data->fetch_assoc()): ?>
 <tr>
-    <th>ID</th>
-    <th>Nama Produk</th>
-    <th>Harga</th>
-    <th>Stok</th>
-</tr>
-
-<?php while ($row = $data->fetch_assoc()) : ?>
-<tr>
-    <td><?= $row['id'] ?></td>
-    <td><?= $row['nama_produk'] ?></td>
-    <td>Rp <?= number_format($row['harga'], 0, ',', '.') ?></td>
-    <td><?= $row['stok'] ?></td>
+<td><?= $no++ ?></td>
+<td><?= $row['nama_barang'] ?></td>
+<td><?= $row['harga'] ?></td>
+<td><?= $row['stok'] ?></td>
+<td>
+<a href="edit.php?id=<?= $row['id_barang'] ?>">Edit</a>
+<a href="hapus.php?id=<?= $row['id_barang'] ?>" onclick="return confirmHapus()">Hapus</a>
+</td>
 </tr>
 <?php endwhile; ?>
-
 </table>
 </body>
 </html>
